@@ -1,5 +1,4 @@
 require "danom/version"
 
-module Danom
-  # Your code goes here...
-end
+# @nodoc
+module Danom; end
