@@ -1,12 +1,17 @@
 # Danom
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/danom`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Monads implemented in Ruby with sugar. Inspired by [@tomstuart](https://twitter.com/tomstuart)'s
+talk https://codon.com/refactoring-ruby-with-monads
 
 ## Installation
 
 Add this line to your application's Gemfile:
+
+```ruby
+gem 'danom', require: 'sugar'
+```
+
+Alernatively without sugar
 
 ```ruby
 gem 'danom'
@@ -20,19 +25,139 @@ Or install it yourself as:
 
     $ gem install danom
 
+## Sugar
+
+If required, you can use the monads as methods:
+
+```ruby
+Maybe('hello')
+Just('world')
+Default('hello', 'world')
+```
+
+Without the sugar you must use the fully qualified name and invoke the constructor:
+
+```ruby
+Danom::Maybe.new('hello')
+Danom::Just.new('world')
+Danom::Default.new('hello', 'world')
+```
+
+All examples will be using the "sugar" syntax but they are interchangeable.
+
+
 ## Usage
 
-TODO: Write usage instructions here
+Generally every `Danom::Monad` will respond to `and_then`.
 
-## Development
+`method_missing` is also used to for convenience as a proxy for `and_then`.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+maybe_name = Maybe({person: {name: 'Bob'}})
+maybe_name
+  .and_then{ |v| v[:person] }
+  .and_then{ |v| v[:name] }
+  .value
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+# Equivalent:
 
-## Contributing
+maybe_name = Maybe({person: {name: 'Bob'}})
+~maybe_name[:person][:name]
+```
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/danom.
+
+Generally the `and_then` block will only run based on a condition from the specific monad.
+
+For example, `Maybe` will only invoke the block from `and_then` if the underlying value is not
+
+`nil`.
+
+```ruby
+Maybe(nil).and_then do |_|
+  raise "Boom"
+end #=> No error
+```
+
+
+### `value`, `monad_value`, `~`
+
+To get the underlying value of a monad you need to call `#value`. If the underlying value also
+responds to `#value`, you can use `#monad_value`. `#~` is a unary operator overload which is an
+alias for `monad_value`.
+
+```ruby
+m = Maybe(5)
+
+m.value == m.monad_value #=> true
+m.value == ~m #=> true
+m.monad_value == ~m #=> true
+```
+
+## Maybe
+
+`Maybe` is useful as a safe navigation operator:
+
+```ruby
+response = request(params) #=> {}
+name  = ~Maybe(response[:person])[:name] #=> nil
+```
+
+It's also useful as an annotation. If you look at the previous example, you'll notice that you could
+wrap `response` in a maybe instead:
+
+```ruby
+name = ~Maybe(response)[:person][:name] #=> nil
+```
+
+This functionally the same but has different semantics. With the former example, it has correctly
+annotated that `response[:person]` can be `nil`, whereas the latter example is an over eager usage.
+
+
+
+Here's a less trivial example
+
+```ruby
+Document.each do |doc|
+  maybe_json = Maybe(doc.data) # data is nil or a json string
+    .and_then{|str| JSON.parse str}
+
+  maybe_json['nodes'] # method_missing in action
+    .map do |n|
+      n['new_field'] = 'new'
+      n
+    end
+    .continue(&:any?) # see documentation
+    .and_then do |new_nodes|
+      doc.data['nodes'] = new_nodes
+      doc.save!
+    end
+end
+```
+
+In this example `value` was no invoked as `Maybe` was use more so for flow control.
+
+## Just
+
+Useful for catching a nil immediately
+
+```ruby
+Just(nil) #=> Danom::Just::CannotBeNil
+never_nil = Just(5).and_then { nil }  #=> Danom::Just::CannotBeNil
+good = ~Just(5) #=> 5
+```
+
+## Default
+
+Similar to a null object pattern. Setting up defaults so `#value` will never return nil. Can be
+combined with a `Maybe`.
+
+```ruby
+d = ~Default('hello', nil) #=> 'hello'
+d = ~Default('hello', Maybe(10)) #=> 10
+```
+
+Notice that default will recursively expand other Monads. As a general rule, you should never
+receive a monad after invoking `#value`.
 
 ## License
 
