@@ -1,5 +1,7 @@
 # Danom
 
+[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/D3MNetworks/danom)
+
 Monads implemented in Ruby with sugar. Inspired by [@tomstuart](https://twitter.com/tomstuart)'s
 talk https://codon.com/refactoring-ruby-with-monads
 
