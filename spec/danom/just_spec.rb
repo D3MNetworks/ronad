@@ -18,4 +18,14 @@ describe Danom::Just do
   it 'will raise CannotBeNil if it chains into a nil' do
     expect {  Just({})[:occupation] }.to raise_error(Danom::Just::CannotBeNil)
   end
+
+  it 'can be comined with other monads' do
+    expect { ~Just(Maybe(nil)) }.to raise_error(Danom::Just::CannotBeNil)
+  end
+
+  it 'can be combined with other monads and return their value' do
+    val = 5
+
+    expect(~Just(Maybe(val))).to eq val
+  end
 end

@@ -1,4 +1,5 @@
 require 'danom/monad'
+require 'byebug'
 
 module Danom
   # Useful for immediately failing when a nil pops up.
@@ -17,6 +18,13 @@ module Danom
     def initialize(value)
       raise CannotBeNil if value == nil
       super
+    end
+
+    # @raise [Danom::Just::CannotBeNil]
+    def monad_value
+      val = super
+      raise CannotBeNil if val == nil
+      val
     end
 
     # Similar to Maybe#and_then but raises an error if the value ever becomes
