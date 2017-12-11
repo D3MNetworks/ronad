@@ -42,7 +42,13 @@ module Danom
         @value
       end
     end
-    alias_method :~@, :monad_value
+
+    # Alias for #monad_value
+    #
+    # @see #monad_value
+    def ~@
+      monad_value
+    end
 
 
     # Calls #to_s on the underlying value.
