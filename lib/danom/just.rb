@@ -1,5 +1,4 @@
 require 'danom/monad'
-require 'byebug'
 
 module Danom
   # Useful for immediately failing when a nil pops up.
