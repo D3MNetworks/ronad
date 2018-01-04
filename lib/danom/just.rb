@@ -15,7 +15,7 @@ module Danom
 
     # @raise [Danom::Just::CannotBeNil] if value is provided as nil
     def initialize(value)
-      raise CannotBeNil if value == nil
+      raise CannotBeNil if !(Monad === value) && value == nil
       super
     end
 

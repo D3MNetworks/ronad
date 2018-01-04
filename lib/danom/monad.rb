@@ -51,14 +51,14 @@ module Danom
     end
 
 
-    # Calls #to_s on the underlying value.
+    # Proxy all Object methods to underlying value
     #
-    # @note This happens because method_missing does not override #to_s
     # @private
-    def to_s
-      and_then { |v| v.to_s }
+    Object.new.methods.each do |object_method|
+      define_method object_method do |*args|
+        and_then { |v| v.public_send(object_method, *args) }
+      end
     end
-
 
     private
 
