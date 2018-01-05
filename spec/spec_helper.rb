@@ -1,6 +1,6 @@
 require "bundler/setup"
 require 'byebug'
-require "danom"
+require "ronad"
 require 'sugar'
 
 RSpec.configure do |config|

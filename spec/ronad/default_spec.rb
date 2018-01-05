@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Danom::Default do
+describe Ronad::Default do
   it 'provides a default if the value turns out to be nil' do
     fallback = 'hello'
     d = Default fallback, nil
@@ -10,7 +10,7 @@ describe Danom::Default do
   it 'throws an error if you provide a nil for the fallback' do
     expect{
       d = Default nil, 'hello'
-    }.to raise_error(Danom::Just::CannotBeNil)
+    }.to raise_error(Ronad::Just::CannotBeNil)
   end
 
   it 'can be combined with other monads' do

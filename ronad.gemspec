@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "danom/version"
+require "ronad/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "danom"
-  spec.version       = Danom::VERSION
+  spec.name          = "ronad"
+  spec.version       = Ronad::VERSION
   spec.authors       = ["Uri Gorelik"]
   spec.email         = ["ugorelik@teldio.com"]
 
   spec.summary       = %q{Monads implemented the Ruby way}
   # spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "https://github.com/D3MNetworks/danom"
+  spec.homepage      = "https://github.com/D3MNetworks/ronad"
   spec.license       = "MIT"
 
 
