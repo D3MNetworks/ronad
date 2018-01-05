@@ -1,6 +1,6 @@
-require 'danom/monad'
+require 'ronad/monad'
 
-module Danom
+module Ronad
   class Maybe < Monad
     # Allows for safe navigation on nil.
     #

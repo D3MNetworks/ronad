@@ -1,6 +1,6 @@
-require 'danom/monad'
+require 'ronad/monad'
 
-module Danom
+module Ronad
   # A default "monad". Not technically a monad as it take two values.
   class Default < Monad
     # @param fallback [Object] The value on which to fallback if the doesn't
@@ -22,11 +22,11 @@ module Danom
     #
     # @example
     #   d = Default('Missing name', nil)
-    #   d = d.upcase.split.join #=> Danom::Default
+    #   d = d.upcase.split.join #=> Ronad::Default
     #   name = ~d # 'Missing name'
     #
     #   d = Default('Missing name', 'Uri')
-    #   d = d.upcase #=> Danom::Default
+    #   d = d.upcase #=> Ronad::Default
     #   name = ~d # 'URI'
     #
     # Default can be combined with a maybe. Extracting the value is recursive
@@ -34,10 +34,10 @@ module Danom
     #
     # @example Combining with a Maybe
     #   m = Maybe(nil)
-    #   d = Default('No name', m) #=> Danom::Default
+    #   d = Default('No name', m) #=> Ronad::Default
     #   name = ~d #=>  'No name'
     #
-    # @see Danom::Monad#method_missing
+    # @see Ronad::Monad#method_missing
     def and_then &block
       if @value == nil
         Default.new @fallback, nil

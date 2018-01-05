@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Danom::Maybe do
+describe Ronad::Maybe do
   it 'chains nils together' do
     # The assertion is that there is no error
     Maybe(nil).m1.m2.m3

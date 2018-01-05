@@ -1,6 +1,6 @@
-# Danom
+# Ronad
 
-[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/D3MNetworks/danom)
+[![Yard Docs](http://img.shields.io/badge/yard-docs-blue.svg)](http://www.rubydoc.info/github/D3MNetworks/ronad)
 
 Monads implemented in Ruby with sugar. Inspired by [@tomstuart](https://twitter.com/tomstuart)'s
 talk https://codon.com/refactoring-ruby-with-monads
@@ -10,13 +10,13 @@ talk https://codon.com/refactoring-ruby-with-monads
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'danom', require: 'sugar'
+gem 'ronad', require: 'sugar'
 ```
 
 Alernatively without sugar
 
 ```ruby
-gem 'danom'
+gem 'ronad'
 ```
 
 And then execute:
@@ -25,7 +25,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install danom
+    $ gem install ronad
 
 ## Sugar
 
@@ -40,9 +40,9 @@ Default('hello', 'world')
 Without the sugar you must use the fully qualified name and invoke the constructor:
 
 ```ruby
-Danom::Maybe.new('hello')
-Danom::Just.new('world')
-Danom::Default.new('hello', 'world')
+Ronad::Maybe.new('hello')
+Ronad::Just.new('world')
+Ronad::Default.new('hello', 'world')
 ```
 
 All examples will be using the "sugar" syntax but they are interchangeable.
@@ -50,7 +50,7 @@ All examples will be using the "sugar" syntax but they are interchangeable.
 
 ## Usage
 
-Generally every `Danom::Monad` will respond to `and_then`.
+Generally every `Ronad::Monad` will respond to `and_then`.
 
 `method_missing` is also used to for convenience as a proxy for `and_then`.
 
@@ -143,8 +143,8 @@ In this example `value` was no invoked as `Maybe` was use more so for flow contr
 Useful for catching a nil immediately
 
 ```ruby
-Just(nil) #=> Danom::Just::CannotBeNil
-never_nil = Just(5).and_then { nil }  #=> Danom::Just::CannotBeNil
+Just(nil) #=> Ronad::Just::CannotBeNil
+never_nil = Just(5).and_then { nil }  #=> Ronad::Just::CannotBeNil
 good = ~Just(5) #=> 5
 ```
 

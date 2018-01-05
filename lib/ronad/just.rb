@@ -1,6 +1,6 @@
-require 'danom/monad'
+require 'ronad/monad'
 
-module Danom
+module Ronad
   # Useful for immediately failing when a nil pops up.
   #   name = get_name(person) #=> nil
   #   # ... later somewhere
@@ -13,13 +13,13 @@ module Danom
     # Raised if the underlying value of Just becomes nil
     class CannotBeNil < StandardError; end
 
-    # @raise [Danom::Just::CannotBeNil] if value is provided as nil
+    # @raise [Ronad::Just::CannotBeNil] if value is provided as nil
     def initialize(value)
       raise CannotBeNil if !(Monad === value) && value == nil
       super
     end
 
-    # @raise [Danom::Just::CannotBeNil]
+    # @raise [Ronad::Just::CannotBeNil]
     def monad_value
       val = super
       raise CannotBeNil if val == nil
@@ -35,7 +35,7 @@ module Danom
     #
     # @example Failing when becomes nil
     #   j = Just({}) #=> Just
-    #   j[:name] #=> Danom::Monad::CannotBeNil
+    #   j[:name] #=> Ronad::Monad::CannotBeNil
     #
     #
     # @see Maybe#and_then

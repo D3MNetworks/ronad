@@ -1,4 +1,4 @@
-module Danom
+module Ronad
   # This class provides a common interface.
   #
   # @abstract
@@ -67,15 +67,15 @@ module Danom
     #
     # @example Chaining fetches on a hash that does not have the keys
     #   m = Maybe({})
-    #   m_name = m[:person][:full_name] #=> Danom::Maybe
+    #   m_name = m[:person][:full_name] #=> Ronad::Maybe
     #   name = ~m_name #=> nil
     #
     # @example Safe navigation
     #   m = Maybe(nil)
-    #   m_name = m.does.not.have.methods.upcase #=> Danom::Maybe
+    #   m_name = m.does.not.have.methods.upcase #=> Ronad::Maybe
     #   name = ~m_name #=> nil
     #
-    # @return [Danom::Monad]
+    # @return [Ronad::Monad]
     def method_missing(method, *args, &block)
       unwrapped_args = args.map do |arg|
         case arg
