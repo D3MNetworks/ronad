@@ -161,6 +161,24 @@ d = ~Default('hello', Maybe(10)) #=> 10
 Notice that default will recursively expand other Monads. As a general rule, you should never
 receive a monad after invoking `#value`.
 
+## Eventually
+
+Useful for delaying execution or not executing at all. Useful to combine with
+Default when it's not know if the default should execute.
+
+```
+person = Default(
+  Eventually { Person.create(name: "Frank", location: :unknown) },
+  Maybe(Person.find_by(name: "Frank"))
+)
+
+~ person.update(location: 'somewhere')
+```
+
+If `find_by` finds a person the `Person.create` will never be invoked.
+Conversely if `find_by` does not it will create the person and update their
+location.
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
