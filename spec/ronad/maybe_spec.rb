@@ -107,4 +107,37 @@ describe Ronad::Maybe do
       expect(m.value).to be_nil
     end
   end
+
+
+  describe '#halt' do
+    it '"Fails" the Maybe' do
+      m = Maybe(1).halt{true}
+      expect(m.value).to be_nil
+    end
+
+    it 'can be used to short-circuite normally truthy operations' do
+      side_effect = nil
+      Maybe([]).and_then do |v|
+        side_effect = v.map(&:to_s)
+      end
+      expect(side_effect).to eq []
+
+
+      side_effect = nil
+      Maybe([]).halt(&:empty?).and_then do |v|
+        side_effect = v.map(&:to_s)
+      end
+      expect(side_effect).to be_nil
+    end
+
+    it 'has no effect if the maybe is already a nil' do
+      side_effect = nil
+      Maybe(nil).halt{false}.and_then do |v|
+        side_effect = 11
+      end
+
+      expect(side_effect).to be_nil
+    end
+  end
+
 end
