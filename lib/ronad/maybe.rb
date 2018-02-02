@@ -53,5 +53,14 @@ module Ronad
       end
     end
 
+    # "Fails" a maybe given a certain condition. If the condition is `true`
+    # then Maybe(nil) will be returned.
+    #
+    # @see continue
+    def halt
+      and_then do |value|
+        value unless yield value
+      end
+    end
   end
 end
