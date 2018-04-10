@@ -10,7 +10,7 @@ talk https://codon.com/refactoring-ruby-with-monads
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'ronad', require: 'sugar'
+gem 'ronad', require: 'ronad/sugar'
 ```
 
 Alernatively without sugar
