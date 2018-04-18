@@ -3,6 +3,13 @@ module Ronad
   #
   # @abstract
   class Monad
+    (Object.new.methods - [:class]).each do |object_method|
+      define_method object_method do |*args|
+        and_then { |v| v.public_send(object_method, *args) }
+      end
+    end
+
+
     def initialize(value)
       if Monad === value
         @value = value.value
@@ -10,6 +17,7 @@ module Ronad
         @value = value
       end
     end
+
 
     # Extract the value from the monad. If the underlying value responds to
     # #value then this will be bypassed instead.
@@ -43,6 +51,7 @@ module Ronad
       end
     end
 
+
     # Alias for #monad_value
     #
     # @see #monad_value
@@ -50,15 +59,6 @@ module Ronad
       monad_value
     end
 
-
-    # Proxy all Object methods to underlying value
-    #
-    # @private
-    Object.new.methods.each do |object_method|
-      define_method object_method do |*args|
-        and_then { |v| v.public_send(object_method, *args) }
-      end
-    end
 
     private
 
@@ -84,8 +84,6 @@ module Ronad
         end
       end
       and_then { |value| value.public_send(method, *unwrapped_args, &block) }
-    rescue TypeError
-      self.class.new(nil)
     end
 
     def respond_to_missing?(method_name, include_private = false)
