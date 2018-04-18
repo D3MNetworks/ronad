@@ -24,6 +24,12 @@ describe Ronad::Maybe do
     expect(m.value).to eq i.to_s
   end
 
+  it 'raises type errors' do
+    expect {
+      Maybe('6') + 2
+    }.to raise_error(TypeError)
+  end
+
   describe '#and_then' do
     it 'chains operations together' do
       m = Maybe(1).and_then(&:to_s)
@@ -139,5 +145,4 @@ describe Ronad::Maybe do
       expect(side_effect).to be_nil
     end
   end
-
 end
