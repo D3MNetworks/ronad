@@ -1,7 +1,7 @@
 require "bundler/setup"
 require 'byebug'
 require "ronad"
-require 'sugar'
+require 'ronad/sugar'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
