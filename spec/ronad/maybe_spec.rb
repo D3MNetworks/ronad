@@ -115,6 +115,29 @@ describe Ronad::Maybe do
   end
 
 
+  describe '::from_multiple_values' do
+    it 'can be created from multiple values shorting at the first non-nil' do
+      val = 2
+      m = Ronad::Maybe.from_multiple_values(nil, val)
+      expect(m.value).to eq val
+    end
+
+    it 'can be used using the sugar method' do
+      val = 2
+      m = Maybe(nil, val)
+      expect(m.value).to eq val
+    end
+
+    it 'can be combined with Just to simualte "just one" behavior' do
+      val = 2
+      m = Just Maybe(nil, val)
+      expect(m.value).to eq val
+
+      m2 = Just Maybe(nil, nil)
+      expect {m2.value}.to raise_error Ronad::Just::CannotBeNil
+    end
+  end
+
   describe '#halt' do
     it '"Fails" the Maybe' do
       m = Maybe(1).halt{true}

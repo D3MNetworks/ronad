@@ -2,6 +2,12 @@ require 'ronad/monad'
 
 module Ronad
   class Maybe < Monad
+    # Creates a single Maybe from multiple values, shorting on the first
+    # non-nil value.
+    def self.from_multiple_values(*vals)
+      new vals.detect { |v| Monad.new(v).value != nil }
+    end
+
     # Allows for safe navigation on nil.
     #
     #   nil&.m1&.m2&.m3 #=> nil
