@@ -37,28 +37,6 @@ module Ronad
       end
     end
 
-    # "Fails" a maybe given a certain condition. If the condition is `false`
-    # then Maybe(nil) will be returned. Useful for performing side-effects
-    # given a certain condition
-    #
-    #   Maybe([]).and_then do |value|
-    #     value.each(&:some_operation)
-    #     OtherModule.finalize! # Side Effect should only happen if there
-    #   end                     # are any values
-    #
-    # The following `and_then` only executes if `value` responds truthy to any?
-    #
-    #   Maybe([]).continue(&:any?).and_then do |value|
-    #     value.each(&:some_operation)
-    #     OtherModule.finalize!
-    #   end
-    # @return [Monad]
-    def continue
-      and_then do |value|
-        value if yield value
-      end
-    end
-
     # "Fails" a maybe given a certain condition. If the condition is `true`
     # then Maybe(nil) will be returned.
     #
